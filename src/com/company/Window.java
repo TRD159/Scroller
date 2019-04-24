@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
@@ -14,6 +15,7 @@ public class Window extends JFrame implements Runnable{
     private double TBU;
 
     BufferedImage background;
+    BufferedImage game;
 
     Screen s;
 
@@ -24,18 +26,26 @@ public class Window extends JFrame implements Runnable{
 
         TBU = 1000.0/UPS;
 
-        setSize(400, 400);
+        setSize(800, 600);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        game = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
         try {
-            background = ImageIO.read(new File("Background.png"));
+            background = new BufferedImage(4000, 1600, BufferedImage.TYPE_INT_ARGB);
+            for(int x = 0; x < background.getWidth(); x += 200) {
+                for(int y = 0; y < background.getHeight(); y += 200) {
+                    background.getGraphics().drawImage(ImageIO.read(new File("BetaTile.png")), x, y, null);
+                }
+            }
         } catch (Exception e) {
 
         }
 
         s = new Screen();
+        s.setWorldY(background.getHeight() - getHeight());
 
+        setResizable(false);
         setVisible(true);
 
         Thread t = new Thread(this);
@@ -88,6 +98,12 @@ public class Window extends JFrame implements Runnable{
     }
 
     public void paint(Graphics g) {
-        g.drawImage(background.getSubimage(s.worldX, s.worldY, getWidth(), getHeight()), 0, 0, null);
+        int wX = (background.getWidth() - getWidth())/2;
+        int wY = (background.getHeight() - getHeight())/2;
+        //sx is 1600 at the center and sy is 500
+        double bX = wX - ((wX - s.getWorldX()) * 0.8);
+        double bY = wY - ((wY - s.getWorldY()) * 0.8);
+        game.getGraphics().drawImage(background.getSubimage((int)bX, (int)bY, getWidth(), getHeight()), 0, 0, null);
+        g.drawImage(game, 0, 0, null);
     }
 }
