@@ -1,8 +1,9 @@
 package com.company;
 
-public abstract class Item {
-    int worldX;
-    int worldY;
+public abstract class Item extends Bject{
+    public Item(int wX, int wY) {
+        super(wX, wY);
+    }
 
     public int getWorldX() {
         return worldX;

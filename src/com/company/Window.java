@@ -19,6 +19,8 @@ public class Window extends JFrame implements Runnable{
 
     Screen s;
 
+    Collision test;
+
     public Window(String title, int UPS) throws HeadlessException {
         super(title);
 
@@ -42,8 +44,10 @@ public class Window extends JFrame implements Runnable{
 
         }
 
-        s = new Screen();
+        s = new Screen(0, 0);
         s.setWorldY(background.getHeight() - getHeight());
+
+        test = new Collision(1000, 1200, 400, 400);
 
         setResizable(false);
         setVisible(true);
@@ -104,6 +108,13 @@ public class Window extends JFrame implements Runnable{
         double bX = wX - ((wX - s.getWorldX()) * 0.8);
         double bY = wY - ((wY - s.getWorldY()) * 0.8);
         game.getGraphics().drawImage(background.getSubimage((int)bX, (int)bY, getWidth(), getHeight()), 0, 0, null);
+        //How drawing objects works
+        if(test.getWorldX() + test.getWid() > s.getWorldX()
+                && test.getWorldX() <= s.getWorldX() + getWidth()
+                && test.getWorldY() + test.getHig() > s.getWorldY()
+                && test.getWorldY() <= s.getWorldY() + getHeight()) {
+            game.getGraphics().fillRect(test.getWorldX() - s.getWorldX(), test.getWorldY() - s.getWorldY(), test.getWid(), test.getHig());
+        }
         g.drawImage(game, 0, 0, null);
     }
 }

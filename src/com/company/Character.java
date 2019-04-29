@@ -2,10 +2,11 @@ package com.company;
 
 import java.awt.image.BufferedImage;
 
-public class Character {
+public class Character extends Bject {
     CharID id;
     BufferedImage sprite;
-    int worldX, worldY;
 
-
+    public Character(int worldX, int worldY) {
+        super(worldX, worldY);
+    }
 }

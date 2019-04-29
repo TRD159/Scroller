@@ -1,9 +1,11 @@
 package com.company;
 
-public class Screen extends Bject{
+public class Bject {
+    int worldX, worldY;
 
-    public Screen(int wX, int wY) {
-        super(wX, wY);
+    public Bject(int worldX, int worldY) {
+        this.worldX = worldX;
+        this.worldY = worldY;
     }
 
     public int getWorldX() {
@@ -20,12 +22,5 @@ public class Screen extends Bject{
 
     public void setWorldY(int worldY) {
         this.worldY = worldY;
-    }
-
-    public void wY(int i) {
-        worldY += i;
-    }
-    public void wX(int i) {
-        worldX += i;
     }
 }
