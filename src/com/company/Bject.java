@@ -1,6 +1,6 @@
 package com.company;
 
-public class Bject {
+public abstract class Bject {
     int worldX, worldY;
 
     public Bject(int worldX, int worldY) {

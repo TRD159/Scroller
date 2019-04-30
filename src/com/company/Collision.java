@@ -15,4 +15,8 @@ public class Collision extends Bject{
     public int getHig() {
         return hig;
     }
+
+    public boolean collide(Collision c) {
+        return false;
+    }
 }
