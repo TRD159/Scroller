@@ -20,6 +20,9 @@ public class Window extends JFrame implements Runnable{
     Screen s;
 
     Collision test;
+    Character c;
+
+    int x = -1;
 
     public Window(String title, int UPS) throws HeadlessException {
         super(title);
@@ -44,10 +47,15 @@ public class Window extends JFrame implements Runnable{
 
         }
 
-        s = new Screen(0, 0);
-        s.setWorldY(background.getHeight() - getHeight());
+        s = new Screen(new Rectangle(0, background.getHeight() - getHeight(), getWidth(), getHeight()));
 
         test = new Collision(1000, 1200, 400, 400);
+
+        ImageManager im = new ImageManager();
+
+        im.loadImages("Images.txt");
+
+        c = new Character(new Rectangle(200, 1400, 15, 15), CharID.CharTest, im);
 
         setResizable(false);
         setVisible(true);
@@ -95,10 +103,11 @@ public class Window extends JFrame implements Runnable{
             if(shouldRepaint)
                 repaint();
         }
+
     }
 
     private void update() {
-
+        x = (x + 1) % 7;
     }
 
     public void paint(Graphics g) {
@@ -109,12 +118,24 @@ public class Window extends JFrame implements Runnable{
         double bY = wY - ((wY - s.getWorldY()) * 0.8);
         game.getGraphics().drawImage(background.getSubimage((int)bX, (int)bY, getWidth(), getHeight()), 0, 0, null);
         //How drawing objects works
-        if(test.getWorldX() + test.getWid() > s.getWorldX()
-                && test.getWorldX() <= s.getWorldX() + getWidth()
-                && test.getWorldY() + test.getHig() > s.getWorldY()
-                && test.getWorldY() <= s.getWorldY() + getHeight()) {
+        /*if(isinScreen(test)) {
             game.getGraphics().fillRect(test.getWorldX() - s.getWorldX(), test.getWorldY() - s.getWorldY(), test.getWid(), test.getHig());
+        }*/
+        if(isinScreen(c) && x > -1) {
+            //System.out.println(c.getSprite(x));
+            game.getGraphics().drawImage(c.getSprite(x), c.getWorldX(), c.getWorldY(), null);
         }
         g.drawImage(game, 0, 0, null);
+
+    }
+
+    private boolean isinScreen(Bject b) {
+        Rectangle r = b.getR();
+        //System.out.println(r);
+        //System.out.println(s.getR());
+        return (r.getX() + r.getWidth() > s.getR().getX()
+                && r.getX() <= s.getWorldX() + getWidth()
+                && r.getY() + r.getHeight() > s.getR().getY()
+                && r.getY() <= s.getR().getY() + getHeight());
     }
 }
